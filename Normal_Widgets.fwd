@@ -56,6 +56,15 @@
       "author": "𝙈𝙖𝙠𝙠𝙖𝙋𝙖𝙠𝙠𝙖",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Forward_Widgets/refs/heads/main/Normal/danmu.pro.online.js"
     },
+{
+      "id": "universal_danmu",
+      "title": "通用弹幕",
+      "description": "通用弹幕",
+      "requiredVersion": "0.0.2",
+      "version": "1.0.0",
+      "author": "未知",
+      "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Forward_Widgets/refs/heads/main/Normal/universal_danmu.js"
+    },
     {
       "id": "forward.auto.danmu",
       "title": "自动链接弹幕v2",
