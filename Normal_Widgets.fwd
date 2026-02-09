@@ -57,16 +57,6 @@
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Forward_Widgets/refs/heads/main/Normal/danmu.pro.online.js"
     },
     {
-      "id": "baranwang.danmu.universe",
-      "title": "通用弹幕",
-      "description": "通用弹幕插件，支持腾讯、优酷、爱奇艺、哔哩哔哩、人人视频等平台",
-      "requiredVersion": "0.0.2",
-      "version": "0.15.1",
-      "author": "Baran",
-      "url": "https://for-ward.vercel.app/Widgets/danmu_universe.js",
-      "backup_url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Forward_Widgets/refs/heads/main/Normal/baranwang.danmu.universe.js"
-    },
-    {
       "id": "forward.auto.danmu",
       "title": "自动链接弹幕v2",
       "description": "自动获取播放链接并从服务器获取弹幕【30% off code：CHEAP】",
