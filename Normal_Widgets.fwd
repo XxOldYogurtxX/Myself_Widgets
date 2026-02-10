@@ -40,15 +40,6 @@
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Forward_Widgets/refs/heads/main/Normal/hot_picks.js"
     },
     {
-      "id": "Trakt",
-      "title": "Trakt我看&Trakt个性化推荐",
-      "description": "解析Trakt想看、在看、已看、片单、追剧日历以及根据个人数据生成的个性化推荐",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.15",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Forward_Widgets/refs/heads/main/Normal/trakt.js"
-    },
-    {
       "id": "danmu.pro.online",
       "title": "弹幕多源",
       "description": "支持添加多条api并自命名&繁简互转",
