@@ -7,6 +7,8 @@
       "id": "91porn_int",
       "title": "91porn",
       "requiredVersion": "0.0.2",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/91porn_int.js"
     },
@@ -14,6 +16,8 @@
       "id": "91porny_int",
       "title": "91porny",
       "requiredVersion": "0.0.2",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/91porny_int.js"
     },
@@ -21,6 +25,8 @@
       "id": "jable",
       "title": "jable",
       "requiredVersion": "0.0.1",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/jable.js"
     },
@@ -28,6 +34,8 @@
       "id": "javday",
       "title": "javday_int",
       "requiredVersion": "0.0.1",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/javday_int.js"
     },
@@ -35,6 +43,8 @@
       "id": "missavovo",
       "title": "missav",
       "requiredVersion": "0.0.1",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/missavovo.js"
     },
@@ -42,6 +52,8 @@
       "id": "pornhub",
       "title": "pornhub",
       "requiredVersion": "0.0.1",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/pornhub_int.js"
     },
@@ -49,8 +61,10 @@
       "id": "xvideos_int",
       "title": "xvideos",
       "requiredVersion": "0.0.1",
+      "description": "nsfw",
+      "version": "1.0",
       "author": "网络",
       "url": "https://raw.githubusercontent.com/XxOldYogurtxX/Myself_Widgets/refs/heads/main/NSFW/xvideos_int.js"
-    },
+    }
   ]
 }
