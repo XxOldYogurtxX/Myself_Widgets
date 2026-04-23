@@ -1,32 +1,33 @@
 // --- 核心配置 ---
-const BASE_DATA_URL = "https://raw.githubusercontent.com/opix-maker/Forward/main";
+const BASE_DATA_URL = "https://raw.githubusercontent.com/opix-maker/121416/main";
 const RECENT_DATA_URL = `${BASE_DATA_URL}/recent_data.json`;
 
 // --- 动态年份生成 ---
 const currentYear = new Date().getFullYear();
-const startYear = 2025; 
+const startYear = currentYear;
 const yearOptions = [];
-for (let year = startYear; year >= 1940; year--) { 
+for (let year = startYear; year >= 1940; year--) {
     yearOptions.push({ title: `${year}`, value: `${year}` });
 }
 
 var WidgetMetadata = {
     id: "bangumi_charts_tmdb_v3",
     title: "Bangumi 热门榜单",
+    description: "获取Bangumi近期热门、每日放送数据，支持榜单筛选。",
     version: "2.0.0",
     author: "Autism ",
-    site: "https://github.com/opix-maker/Forward",
+    site: "https://github.com/opix-maker/121416",
     requiredVersion: "0.0.1",
-    detailCacheDuration: 60,
+    detailCacheDuration: 6000,
     modules: [
         {
             title: "近期热门",
             description: "按作品类型浏览近期热门内容 (固定按热度 trends 排序)",
             requiresWebView: false,
             functionName: "fetchRecentHot",
-            cacheDuration: 20000,
+            cacheDuration: 500000,
             params: [
-                { name: "category", title: "分类", type: "enumeration", value: "anime", enumOptions: [ { title: "动画", value: "anime" } ] },
+                { name: "category", title: "分类", type: "enumeration", value: "anime", enumOptions: [{ title: "动画", value: "anime" }] },
                 { name: "page", title: "页码", type: "page", value: "1" }
             ]
         },
@@ -35,27 +36,29 @@ var WidgetMetadata = {
             description: "按年份、季度/全年及作品类型浏览排行",
             requiresWebView: false,
             functionName: "fetchAirtimeRanking",
+            cacheDuration: 1000000,
             params: [
-                { name: "category", title: "分类", type: "enumeration", value: "anime", enumOptions: [ { title: "动画", value: "anime" }, { title: "三次元", value: "real" } ] },
-                { 
-                    name: "year", 
-                    title: "年份", 
+                { name: "category", title: "分类", type: "enumeration", value: "anime", enumOptions: [{ title: "动画", value: "anime" }, { title: "三次元", value: "real" }] },
+                {
+                    name: "year",
+                    title: "年份",
                     type: "enumeration",
-                    description: "选择一个年份进行浏览。", 
+                    description: "选择一个年份进行浏览。",
                     value: `${currentYear}`, // 默认值依然是当前年份
                     enumOptions: yearOptions // 使用新的年份列表
                 },
-                { name: "month", title: "月份/季度", type: "enumeration", value: "all", description: "选择全年或特定季度对应的月份。留空则为全年。", enumOptions: [ { title: "全年", value: "all" }, { title: "冬季 (1月)", value: "1" }, { title: "春季 (4月)", value: "4" }, { title: "夏季 (7月)", value: "7" }, { title: "秋季 (10月)", value: "10" } ] },
-                { name: "sort", title: "排序方式", type: "enumeration", value: "collects", enumOptions: [ { title: "排名", value: "rank" }, { title: "热度", value: "trends" }, { title: "收藏数", value: "collects" }, { title: "发售日期", value: "date" }, { title: "名称", "value": "title" } ] },
+                { name: "month", title: "月份/季度", type: "enumeration", value: "all", description: "选择全年或特定季度对应的月份。留空则为全年。", enumOptions: [{ title: "全年", value: "all" }, { title: "冬季 (1月)", value: "1" }, { title: "春季 (4月)", value: "4" }, { title: "夏季 (7月)", value: "7" }, { title: "秋季 (10月)", value: "10" }] },
+                { name: "sort", title: "排序方式", type: "enumeration", value: "collects", enumOptions: [{ title: "排名", value: "rank" }, { title: "热度", value: "trends" }, { title: "收藏数", value: "collects" }, { title: "发售日期", value: "date" }, { title: "名称", "value": "title" }] },
                 { name: "page", title: "页码", type: "page", value: "1" }
             ]
         },
-        // ... (每日放送模块保持不变)
+
         {
             title: "每日放送",
             description: "查看指定范围的放送（数据来自Bangumi API）",
             requiresWebView: false,
             functionName: "fetchDailyCalendarApi",
+            cacheDuration: 20000,
             params: [
                 {
                     name: "filterType",
@@ -111,7 +114,6 @@ var WidgetMetadata = {
     ]
 };
 
-
 // --- 全局数据管理 ---
 let globalData = null;
 let dataFetchPromise = null;
@@ -122,15 +124,15 @@ async function fetchAndCacheGlobalData() {
     if (dataFetchPromise) return await dataFetchPromise;
 
     dataFetchPromise = (async () => {
-        console.log(`[BGM Widget v10.4] 开始获取近期数据...`);
+        console.log(`[BGM Widget v1] 开始获取近期数据...`);
         try {
             const response = await Widget.http.get(RECENT_DATA_URL, { headers: { 'Cache-Control': 'no-cache' } });
             globalData = response.data;
             globalData.dynamic = {};
-            console.log(`[BGM Widget v10.4] 近期数据初始化完成。`);
+            console.log(`[BGM Widget v1] 近期数据初始化完成。`);
             return globalData;
         } catch (e) {
-            console.error("[BGM Widget v10.4] 获取近期数据失败! 将完全回退到动态模式。", e.message);
+            console.error("[BGM Widget v1] 获取近期数据失败! 将完全回退到动态模式。", e.message);
             globalData = { airtimeRanking: {}, recentHot: {}, dailyCalendar: {}, dynamic: {} };
             return globalData;
         }
@@ -160,7 +162,7 @@ async function fetchAirtimeRanking(params = {}) {
     const isArchiveYear = !globalData.airtimeRanking[category]?.[year];
     if (isArchiveYear) {
         if (!archiveFetchPromises[year]) {
-            console.log(`[BGM Widget v10.4] 创建存档年份请求: ${year}`);
+            console.log(`[BGM Widget v1] 创建存档年份请求: ${year}`);
             archiveFetchPromises[year] = (async () => {
                 try {
                     const archiveUrl = `${BASE_DATA_URL}/archive/${year}.json`;
@@ -168,11 +170,11 @@ async function fetchAirtimeRanking(params = {}) {
                     const archiveYearData = response.data;
                     if (!globalData.airtimeRanking[category]) globalData.airtimeRanking[category] = {};
                     globalData.airtimeRanking[category][year] = archiveYearData.airtimeRanking[category][year];
-                    console.log(`[BGM Widget v10.4] 存档年份 ${year} 加载并合并成功。`);
+                    console.log(`[BGM Widget v1] 存档年份 ${year} 加载并合并成功。`);
                 } catch (e) {
-                    console.warn(`[BGM Widget v10.4] 按需加载存档 ${year} 失败: ${e.message}.`);
+                    console.warn(`[BGM Widget v1] 按需加载存档 ${year} 失败: ${e.message}.`);
                     if (!globalData.airtimeRanking[category]) globalData.airtimeRanking[category] = {};
-                    globalData.airtimeRanking[category][year] = 'failed'; 
+                    globalData.airtimeRanking[category][year] = 'failed';
                 }
             })();
         }
@@ -182,17 +184,17 @@ async function fetchAirtimeRanking(params = {}) {
     try {
         const pages = globalData.airtimeRanking[category][year][month][sort];
         if (pages && pages[page - 1]) {
-            console.log(`[BGM Widget v10.4] 命中预构建数据: ${year}-${sort}-p${page}`);
+            console.log(`[BGM Widget v1] 命中预构建数据: ${year}-${sort}-p${page}`);
             return pages[page - 1];
         }
-    } catch (e) {}
+    } catch (e) { }
 
     const dynamicKey = `airtime-${category}-${year}-${month}-${sort}-${page}`;
     if (globalData.dynamic[dynamicKey]) {
-        console.log(`[BGM Widget v10.4] 命中动态缓存: ${year}-${sort}-p${page}`);
+        console.log(`[BGM Widget v1] 命中动态缓存: ${year}-${sort}-p${page}`);
         return globalData.dynamic[dynamicKey];
     }
-    console.log(`[BGM Widget v10.4] 未命中，启动动态获取: ${year}-${sort}-p${page}`);
+    console.log(`[BGM Widget v1] 未命中，启动动态获取: ${year}-${sort}-p${page}`);
     let url = `https://bgm.tv/${category}/browser/airtime/${year}/${month}?sort=${sort}&page=${page}`;
     const results = await DynamicDataProcessor.processBangumiPage(url, category);
     globalData.dynamic[dynamicKey] = results;
@@ -203,15 +205,15 @@ async function fetchDailyCalendarApi(params = {}) {
     await fetchAndCacheGlobalData();
     let items = globalData.dailyCalendar?.all_week || [];
     if (items.length === 0 && !archiveFetchPromises['daily']) {
-        console.log("[BGM Widget v10.4] 每日放送无预构建数据，尝试动态获取...");
+        console.log("[BGM Widget v1] 每日放送无预构建数据，尝试动态获取...");
         archiveFetchPromises['daily'] = (async () => {
             const dynamicItems = await DynamicDataProcessor.processDailyCalendar();
-            if(!globalData.dailyCalendar) globalData.dailyCalendar = {};
+            if (!globalData.dailyCalendar) globalData.dailyCalendar = {};
             globalData.dailyCalendar.all_week = dynamicItems;
         })();
     }
     if (archiveFetchPromises['daily']) await archiveFetchPromises['daily'];
-    
+
     items = globalData.dailyCalendar?.all_week || [];
     const { filterType = "today", specificWeekday = "1", dailySortOrder = "popularity_rat_bgm", dailyRegionFilter = "all" } = params;
     const JS_DAY_TO_BGM_API_ID = { 0: 7, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6 };
@@ -264,11 +266,9 @@ async function fetchDailyCalendarApi(params = {}) {
 }
 
 const DynamicDataProcessor = (() => {
-    const BGM_BASE_URL = "https://bgm.tv";
     const TMDB_ANIMATION_GENRE_ID = 16;
     const MAX_CONCURRENT_DETAILS_FETCH = 8;
-    function normalizeTmdbQuery(query) { if (!query || typeof query !== 'string') return ""; return query.toLowerCase().trim().replace(/[\[\]【】（）()「」『』:：\-－_,\.・]/g, ' ').replace(/\s+/g, ' ').trim();}
-    function parseDate(dateStr) { if (!dateStr || typeof dateStr !== 'string') return ''; dateStr = dateStr.trim(); let match; match = dateStr.match(/^(\d{4})年(\d{1,2})月(\d{1,2})日/); if (match) return `${match[1]}-${String(match[2]).padStart(2, '0')}-${String(match[3]).padStart(2, '0')}`; match = dateStr.match(/^(\d{4})年(\d{1,2})月(?!日)/); if (match) return `${match[1]}-${String(match[2]).padStart(2, '0')}-01`; match = dateStr.match(/^(\d{4})$/); if (match) return `${match[1]}-01-01`; return '';}
+    function normalizeTmdbQuery(query) { if (!query || typeof query !== 'string') return ""; return query.toLowerCase().trim().replace(/[\[\]【】（）()「」『』:：\-－_,\.・]/g, ' ').replace(/\s+/g, ' ').trim(); }
     function scoreTmdbResult(result, query, validYear) {
         let score = 0;
         const resultTitle = normalizeTmdbQuery(result.title || result.name);
@@ -299,64 +299,13 @@ const DynamicDataProcessor = (() => {
         }
         return bestMatch;
     }
-    function parseBangumiListItems(htmlContent) {
-        const $ = Widget.html.load(htmlContent);
-        const items = [];
-        $('ul#browserItemList li.item').each((_, element) => {
-            const $item = $(element);
-            const id = $item.attr('id')?.substring(5);
-            if (!id) return;
-            const title = $item.find('h3 a.l').text().trim();
-            let cover = $item.find('a.subjectCover img.cover').attr('src');
-            if (cover?.startsWith('//')) cover = 'https:' + cover;
-            const info = $item.find('p.info.tip').text().trim();
-            const rating = $item.find('small.fade').text().trim();
-            items.push({ id, title, cover, info, rating });
-        });
-        return items;
-    }
-    async function fetchItemDetails(item, category) {
-        const yearMatch = item.info.match(/(\d{4})/);
-        const year = yearMatch ? yearMatch[1] : '';
-        const baseItem = {
-            id: item.id, type: "link", title: item.title,
-            posterPath: item.cover, releaseDate: parseDate(item.info),
-            mediaType: category, rating: item.rating,
-            description: item.info, link: `${BGM_BASE_URL}/subject/${item.id}`
-        };
-        const tmdbResult = await searchTmdb(item.title, null, year);
-        if (tmdbResult) {
-            baseItem.id = String(tmdbResult.id);
-            baseItem.type = "tmdb";
-            baseItem.title = tmdbResult.name || tmdbResult.title || baseItem.title;
-            baseItem.posterPath = tmdbResult.poster_path ? `https://image.tmdb.org/t/p/w500${tmdbResult.poster_path}` : baseItem.posterPath;
-            baseItem.releaseDate = tmdbResult.first_air_date || tmdbResult.release_date || baseItem.releaseDate;
-            baseItem.rating = tmdbResult.vote_average ? tmdbResult.vote_average.toFixed(1) : baseItem.rating;
-            baseItem.description = tmdbResult.overview || baseItem.description;
-            baseItem.link = null;
-            baseItem.tmdb_id = String(tmdbResult.id);
-            baseItem.tmdb_origin_countries = tmdbResult.origin_country || [];
-        }
-        return baseItem;
-    }
+    /**
+     * Web scraping has been removed. This function now returns an empty array.
+     * All data should come from pre-built static JSON files.
+     */
     async function processBangumiPage(url, category) {
-        try {
-            const listHtmlResp = await Widget.http.get(url);
-            const pendingItems = parseBangumiListItems(listHtmlResp.data);
-            const results = [];
-            for (let i = 0; i < pendingItems.length; i += MAX_CONCURRENT_DETAILS_FETCH) {
-                const batch = pendingItems.slice(i, i + MAX_CONCURRENT_DETAILS_FETCH);
-                const promises = batch.map(item => fetchItemDetails(item, category));
-                const settled = await Promise.allSettled(promises);
-                settled.forEach(res => {
-                    if (res.status === 'fulfilled' && res.value) results.push(res.value);
-                });
-            }
-            return results;
-        } catch (error) {
-            console.error(`[BGM Widget v10.4] 动态处理页面失败 (${url}): ${error.message}`);
-            return [];
-        }
+        console.warn(`[BGM Widget] processBangumiPage called for ${url} — web scraping has been removed. Returning empty results. Data should come from pre-built JSON.`);
+        return [];
     }
     async function processDailyCalendar() {
         try {
@@ -404,7 +353,7 @@ const DynamicDataProcessor = (() => {
             }
             return enhancedItems;
         } catch (error) {
-            console.error(`[BGM Widget v10.4] 动态处理每日放送失败: ${error.message}`);
+            console.error(`[BGM Widget] 动态处理每日放送失败: ${error.message}`);
             return [];
         }
     }
